@@ -1,5 +1,9 @@
 #include "tetris.h"
+#include <hal/debug.h>
+#include <hal/xbox.h>
+#include <windows.h>
 
+Tetris_Action TETROMINO_ACTION;
 
 void draw_playing_field() {
 
@@ -174,19 +178,13 @@ void render_score() {
     sdsfree(string_score);
 
     if (textSurface == NULL) {
-        fprintf(stderr,
-                "\nTTF_RenderText_Solid Error:  %s\n",
-                SDL_GetError());
-        exit(1);
+        printSDLErrorAndReboot();
     }
 
     SDL_Texture* mTexture = SDL_CreateTextureFromSurface(render, textSurface);
 
     if (mTexture == NULL) {
-        fprintf(stderr,
-                "\nSDL_CreateTextureFromSurface Error:  %s\n",
-                SDL_GetError());
-        exit(1);
+        printSDLErrorAndReboot();
     }
 
     int mWidth = textSurface->w;

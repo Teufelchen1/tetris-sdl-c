@@ -3,11 +3,10 @@
 void init() {
 
     if(TTF_Init() == -1) {
-        fprintf(stderr,
-                "\nTTF_Init Error:  %s\n",
-                SDL_GetError());
-        exit(1);
+        printSDLErrorAndReboot();
     }
+
+    inputInit();
 
     init_graphics();
 

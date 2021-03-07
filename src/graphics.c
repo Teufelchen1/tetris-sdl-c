@@ -1,4 +1,13 @@
 #include "graphics.h"
+#include <hal/debug.h>
+#include <hal/xbox.h>
+#include <windows.h>
+
+
+SDL_Window *window;
+SDL_Renderer *render;
+SDL_Texture *display;
+TTF_Font *gFont;
 
 
 void init_graphics() {
@@ -12,16 +21,18 @@ void init_graphics() {
         WINDOW_TITLE,
 
         // initial position of the window
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+#if defined(NXDK)
+        //SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+        50, SDL_WINDOWPOS_UNDEFINED,  
+#else     
+        // SDL_WINDOWPOS_CENTERED+50, SDL_WINDOWPOS_CENTERED,
+#endif
 
         WINDOW_WIDTH, WINDOW_HEIGHT,
         SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
 
     if (window == NULL) {
-        fprintf(stderr,
-                "\nSDL_CreateWindow Error:  %s\n",
-                SDL_GetError());
-        exit(1);
+        printSDLErrorAndReboot();
     }
 
     // Create a renderer that will draw to the window, -1 specifies that we want to load whichever
@@ -31,13 +42,11 @@ void init_graphics() {
     // SDL_RENDERER_ACCELERATED: We want to use hardware accelerated rendering
     // SDL_RENDERER_PRESENTVSYNC: We want the renderer's present function (update screen) to be
     // synchornized with the monitor's refresh rate
-    render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+    // render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+    render = SDL_CreateRenderer(window, -1, 0);
 
     if (render == NULL) {
-        fprintf(stderr,
-                "\nSDL_CreateRenderer Error:  %s\n",
-                SDL_GetError());
-        exit(1);
+        printSDLErrorAndReboot();
     }
 
     SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
@@ -48,13 +57,10 @@ void init_graphics() {
     SDL_SetRenderTarget(render, display);
 
     // Load font
-    gFont = TTF_OpenFont("src/font/Inconsolata-Regular.ttf", 30);
+    gFont = TTF_OpenFont("D:\\Inconsolata-Regular.ttf", 30);
 
     if (gFont == NULL) {
-        fprintf(stderr,
-                "\nTTF_OpenFont Error:  %s\n",
-                SDL_GetError());
-        exit(1);
+        printSDLErrorAndReboot();
     }
 
     TTF_SetFontHinting(gFont, TTF_HINTING_MONO);

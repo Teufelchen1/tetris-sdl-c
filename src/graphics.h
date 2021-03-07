@@ -1,4 +1,5 @@
 #include "defs.h"
+#include "utility.h"
 
 extern SDL_Window *window;
 extern SDL_Renderer *render;

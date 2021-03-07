@@ -5,10 +5,11 @@
 #include <time.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL2_gfxPrimitives.h>
+
 #include "sds.h"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
-#include "SDL2_gfxPrimitives.h"
 
 #ifndef _GLOBAL_CONSTANTS
 #define _GLOBAL_CONSTANTS
@@ -22,7 +23,12 @@
 #define PLAYFIELD_HEIGHT 22
 #define PLAYFIELD_WIDTH 10
 
-#define WINDOW_HEIGHT PLAYFIELD_HEIGHT * (BLOCK_SIZE + 1) + 1
+//#define WINDOW_HEIGHT PLAYFIELD_HEIGHT * (BLOCK_SIZE + 1) + 1
 #define WINDOW_WIDTH PLAYFIELD_WIDTH * (BLOCK_SIZE + 1) + 1
+#define WINDOW_HEIGHT 480
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
+
 
 #endif

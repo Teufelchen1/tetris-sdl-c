@@ -1,26 +1,28 @@
+#include <stdio.h>
+#include <hal/video.h>
+#include <hal/debug.h>
+#include <hal/xbox.h>
+#include <windows.h>
 #include "main.h"
 
-int main(int argc, const char *argv[]) {
 
-    // Start up SDL, and make sure it went ok
-    //
-    uint32_t flags = SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+int main() {
+    XVideoSetMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, REFRESH_DEFAULT);
 
-        fprintf(stderr,
-                "\nUnable to initialize SDL:  %s\n",
-                SDL_GetError());
+    if (SDL_VideoInit(NULL) < 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL video.\n");
+        printSDLErrorAndReboot();
+    }
 
-        return 1;
+    if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {
+        printSDLErrorAndReboot();
     }
 
     atexit(cleanup);
-
     init();
 
     bool quit = false;
     while(!quit) {
-
         preRender();
 
         getInput();
@@ -34,5 +36,9 @@ int main(int argc, const char *argv[]) {
         SDL_Delay(16);
     }
 
+
+    debugPrint("Prepare for reboot!\n");
+    Sleep(5000);
+    XReboot();
     return 0;
 }

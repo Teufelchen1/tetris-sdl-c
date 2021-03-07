@@ -1,6 +1,8 @@
 #include "defs.h"
 #include "tetris.h"
+#include "utility.h"
 
-Tetris_Action TETROMINO_ACTION;
+extern Tetris_Action TETROMINO_ACTION;
 
+void inputInit();
 void getInput();

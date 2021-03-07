@@ -1,4 +1,19 @@
 #include "utility.h"
+#include <hal/debug.h>
+#include <hal/xbox.h>
+#include <windows.h>
+
+
+void printSDLErrorAndReboot(void) {
+    debugPrint("SDL_Error: %s\n", SDL_GetError());
+    debugPrint("Rebooting in 5 seconds.\n");
+    Sleep(5000);
+#if defined(NXDK)
+    XReboot();
+#else
+    exit(EXIT_FAILURE);
+#endif
+}
 
 // src: http://stackoverflow.com/a/1449859/412627
 sds printfcomma(int n) {

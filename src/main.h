@@ -4,11 +4,12 @@
 #include "graphics.h"
 #include "input.h"
 #include "tetris.h"
+#include "utility.h"
 
 // extern vars from graphics.h
-SDL_Window *window;
-SDL_Renderer *render;
-SDL_Texture *display;
-TTF_Font *gFont;
+extern SDL_Window *window;
+extern SDL_Renderer *render;
+extern SDL_Texture *display;
+extern TTF_Font *gFont;
 
 bool render_changed;
